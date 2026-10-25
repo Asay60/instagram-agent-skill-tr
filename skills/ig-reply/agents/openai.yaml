@@ -1,0 +1,4 @@
+interface:
+  display_name: "Yorum Yanıtları"
+  short_description: "Yorum Yanıtları için içerik iş akışı"
+  default_prompt: "$ig-reply kullanarak markama uygun Türkçe içerik hazırla."

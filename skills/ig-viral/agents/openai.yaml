@@ -1,0 +1,4 @@
+interface:
+  display_name: "Örnek İçerik Araştırması"
+  short_description: "Örnek İçerik Araştırması için içerik iş akışı"
+  default_prompt: "$ig-viral kullanarak markama uygun Türkçe içerik hazırla."

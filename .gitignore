@@ -3,3 +3,9 @@ __pycache__/
 *.pyc
 .venv/
 *.tmp
+.instagram-agent/
+.env
+.env.*
+!.env.example
+voice.local.md
+*.local.tsv

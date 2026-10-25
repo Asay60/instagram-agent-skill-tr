@@ -1,0 +1,4 @@
+interface:
+  display_name: "Kaydırmalı Gönderi"
+  short_description: "Kaydırmalı Gönderi için içerik iş akışı"
+  default_prompt: "$ig-carousel kullanarak markama uygun Türkçe içerik hazırla."

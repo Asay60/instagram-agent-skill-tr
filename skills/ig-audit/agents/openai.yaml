@@ -1,0 +1,4 @@
+interface:
+  display_name: "İçerik Performansı"
+  short_description: "Instagram gönderi verilerini değerlendir"
+  default_prompt: "$ig-audit kullanarak paylaştığım gönderi verilerini değerlendir."

@@ -1,0 +1,4 @@
+interface:
+  display_name: "Gönderi Açıklaması"
+  short_description: "Gönderi Açıklaması için içerik iş akışı"
+  default_prompt: "$ig-caption kullanarak markama uygun Türkçe içerik hazırla."

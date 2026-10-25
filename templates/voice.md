@@ -1,67 +1,37 @@
-# voice.md
+# Marka sesi
 
-Copy this to `~/.claude/instagram/voice.md` and fill it in. Every skill in the
-pack reads it. Ten minutes here is the difference between scripts you shoot and
-scripts you rewrite.
+Bu şablonu `IG_AGENT_HOME/voice.md` dosyasına kopyalayın. Değişken ayarlı değilse kullanıcı klasörünüzde `.instagram-agent/voice.md` kullanın. Bu kişisel dosyayı herkese açık Git deposuna eklemeyin.
 
-If you would rather not fill it in by hand, send Claude three of your own reels
-or captions and say "write my voice.md from these". That works better than
-guessing at the answers.
+## Kimlik ve teklif
+- Marka veya isim:
+- Instagram kullanıcı adı:
+- Ne satıyorum:
+- Kime hitap ediyorum:
+- Dil / bölge / saat dilimi:
 
-This file matters more on Instagram than anywhere else, because you have to say
-the words out loud. A line you would never say is not a draft, it is a retake.
+## Anlatım
+- Bana ait üç örnek metin veya döküm:
+- Ton (sakin, doğrudan, kurumsal, esprili):
+- Kullandığım sözcükler:
+- Kullanmadığım sözcükler:
+- Hitap biçimi (sen / siz):
+- Emoji tercihi:
+- Kamera / seslendirme tercihi:
+- Ölçülmüş konuşma hızı (sözcük/dk, bilinmiyorsa boş):
 
----
+## İçerik sınırları
+- Üzerinde durduğum üç görüş:
+- Paylaşılmayacak konular ve gizli bilgiler:
+- Kullanılamayacak müşteri isimleri ve veriler:
+- Yapamayacağım iddialar:
 
-## Who I am
+## Kullanılabilecek gerçek kanıtlar
+- Doğrulanmış sonuç ve kaynağı:
+- Kullanım izni verilmiş örnek:
+- Henüz doğrulanmamış bilgiler:
 
-- **Name:**
-- **Handle:**
-- **What I do, in one sentence:**
-- **Who I am talking to:** (be specific: "photographers charging under $2,000",
-  not "creatives")
-- **What I sell:**
-
-## What I sound like
-
-- **Three of my own reels or captions that sound most like me:** (paste them)
-- **On camera I am:** (fast and loud / dry / calm / funny / deadpan)
-- **Words I actually use:**
-- **Words I would never say out loud:**
-- **Do I swear:** (yes / mild / no)
-- **Emoji in captions:** (never / one, rarely / freely)
-- **Face on camera:** (always / sometimes / faceless)
-- **Voiceover or to-camera:**
-- **Pace:** (words per minute, if you have timed yourself reading a script.
-  `beats.py --wpm` uses this. Most people are between 150 and 200.)
-
-## My positions
-
-Three to five things I believe that some of my audience does not. These are
-where the good reels come from.
-
-1.
-2.
-3.
-
-## Off limits
-
-- **Topics I do not post about:**
-- **Clients, numbers or names I cannot say publicly:**
-- **Claims I am not allowed to make:** (regulated industry, employer policy, NDA)
-
-## Proof I can use
-
-Real numbers, outcomes and stories I am happy to put my name on. The skills will
-never invent one, so if this section is empty, every draft comes back with
-`{{your number}}` in it.
-
--
--
--
-
-## The ask
-
-- **My keyword CTA, if I use one:** (one word, sayable, no spaces)
-- **What the keyword sends them:**
-- **Where my link goes:**
+## Tek eylem çağrısı
+- Beklenen eylem:
+- Anahtar kelime (varsa):
+- Teslim edilecek kaynak:
+- Bağlantı hedefi:

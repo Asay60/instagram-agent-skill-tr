@@ -1,0 +1,4 @@
+interface:
+  display_name: "DM Metinleri"
+  short_description: "DM Metinleri için içerik iş akışı"
+  default_prompt: "$ig-dm kullanarak markama uygun Türkçe içerik hazırla."

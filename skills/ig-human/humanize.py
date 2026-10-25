@@ -32,6 +32,11 @@ import os
 import re
 import sys
 import unicodedata
+from pathlib import Path
+sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "_instagram_agent_shared"))
+from ig_locale import configure_locale, lower, print_tr_report, protect_emoji
+LANG = "en"
+
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 LEX = os.path.join(HERE, "slop.json")
@@ -196,20 +201,23 @@ def restore_capitals(original, text):
     a deliberately lower-case voice is a style, not an artefact, and shouting
     over it would be exactly the kind of thing this script exists to stop.
     """
-    starts = re.findall(r"(?:^|[.!?]\s+|\n)\s*([A-Za-z])", original)
+    starts = re.findall(r"(?:^|[.!?]\s+|\n)\s*([A-Za-zÇĞİÖŞÜçğıöşü])", original)
     if not starts or sum(1 for c in starts if c.isupper()) * 2 < len(starts):
         return text
-    return re.sub(r"(?:^|(?<=[.!?] )|(?<=[.!?]\n)|(?<=\n))\s*([a-z])",
-                  lambda m: m.group(0)[:-1] + m.group(1).upper(), text)
+    return re.sub(r"(?:^|(?<=[.!?] )|(?<=[.!?]\n)|(?<=\n))\s*([a-zçğıöşü])",
+                  lambda m: m.group(0)[:-1] + ("İ" if LANG == "tr" and m.group(1) == "i" else m.group(1).upper()), text)
 
 
 def humanize(text, lex):
     raw_for_case = text
     text, urls = protect_urls(text)
+    text, emojis = protect_emoji(text)
     text, inv = pass_invisible(text, lex)
     text, typo = pass_typographic(text, lex)
     text, lexi = pass_lexical(text, lex)
     text = restore_capitals(raw_for_case, text)
+    for i, emoji in enumerate(emojis):
+        text = text.replace(f"\x00EMOJI{i}\x00", emoji)
     text = restore_urls(text, urls)
     return text.strip() + "\n", {
         "invisible": inv,
@@ -259,11 +267,14 @@ def main():
     ap.add_argument("-o", "--out", help="write cleaned text here instead of stdout")
     ap.add_argument("--report", action="store_true", help="print what changed, to stderr")
     ap.add_argument("--json", action="store_true", help="emit {text, report} as JSON")
-    ap.add_argument("--lexicon", default=LEX, help="path to slop.json")
+    ap.add_argument("--lexicon", default=None, help="path to slop.json")
+    ap.add_argument("--lang", choices=("en", "tr"), default="en",
+                    help="Analysis language / analiz dili (default: en)")
     args = ap.parse_args()
+    configure_locale(globals(), args.lang)
 
-    raw = sys.stdin.read() if args.input == "-" else open(args.input, encoding="utf-8").read()
-    lex = load_lexicon(args.lexicon)
+    raw = sys.stdin.read() if args.input == "-" else Path(args.input).read_text(encoding="utf-8")
+    lex = load_lexicon(args.lexicon or LEX)
     clean, report = humanize(raw, lex)
 
     if args.json:
@@ -276,7 +287,11 @@ def main():
     else:
         sys.stdout.write(clean)
     if args.report:
-        render_report(report)
+        if LANG == "tr":
+            print("DÜZENLEME RAPORU | görünmez işaretler / noktalama / sözcükler / kalıplar", file=sys.stderr)
+            print(json.dumps(report, ensure_ascii=False, indent=2), file=sys.stderr)
+        else:
+            render_report(report)
 
 
 if __name__ == "__main__":

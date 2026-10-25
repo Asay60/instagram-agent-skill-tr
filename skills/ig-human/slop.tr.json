@@ -1,0 +1,290 @@
+{
+  "version": "1.1-tr",
+  "note": "Türkçe sadeleştirme sözlüğü. Editoryal öneridir; AI yazarlığı veya filigran tespiti yapmaz. Marka diline göre düzenleyin.",
+  "invisible": [
+    {
+      "cp": "U+200B",
+      "name": "ZERO WIDTH SPACE",
+      "action": "delete"
+    },
+    {
+      "cp": "U+200C",
+      "name": "ZERO WIDTH NON-JOINER",
+      "action": "delete"
+    },
+    {
+      "cp": "U+200D",
+      "name": "ZERO WIDTH JOINER",
+      "action": "delete"
+    },
+    {
+      "cp": "U+2060",
+      "name": "WORD JOINER",
+      "action": "delete"
+    },
+    {
+      "cp": "U+FEFF",
+      "name": "ZERO WIDTH NO-BREAK SPACE / BOM",
+      "action": "delete"
+    },
+    {
+      "cp": "U+00AD",
+      "name": "SOFT HYPHEN",
+      "action": "delete"
+    },
+    {
+      "cp": "U+180E",
+      "name": "MONGOLIAN VOWEL SEPARATOR",
+      "action": "delete"
+    },
+    {
+      "cp": "U+061C",
+      "name": "ARABIC LETTER MARK",
+      "action": "delete"
+    },
+    {
+      "cp": "U+200E",
+      "name": "LEFT-TO-RIGHT MARK",
+      "action": "delete"
+    },
+    {
+      "cp": "U+200F",
+      "name": "RIGHT-TO-LEFT MARK",
+      "action": "delete"
+    },
+    {
+      "cp": "U+E0000-U+E007F",
+      "name": "TAG CHARACTERS (invisible ASCII smuggling)",
+      "action": "delete"
+    },
+    {
+      "cp": "U+00A0",
+      "name": "NO-BREAK SPACE",
+      "action": "space"
+    },
+    {
+      "cp": "U+202F",
+      "name": "NARROW NO-BREAK SPACE",
+      "action": "space"
+    },
+    {
+      "cp": "U+2009",
+      "name": "THIN SPACE",
+      "action": "space"
+    },
+    {
+      "cp": "U+2007",
+      "name": "FIGURE SPACE",
+      "action": "space"
+    },
+    {
+      "cp": "U+2003",
+      "name": "EM SPACE",
+      "action": "space"
+    },
+    {
+      "cp": "U+2002",
+      "name": "EN SPACE",
+      "action": "space"
+    },
+    {
+      "cp": "U+2063",
+      "name": "INVISIBLE SEPARATOR",
+      "action": "delete"
+    }
+  ],
+  "typographic": [
+    {
+      "from": "—",
+      "name": "EM DASH",
+      "to": ", "
+    },
+    {
+      "from": "–",
+      "name": "EN DASH",
+      "to": "-"
+    },
+    {
+      "from": "‘",
+      "name": "LEFT SINGLE QUOTE",
+      "to": "'"
+    },
+    {
+      "from": "’",
+      "name": "RIGHT SINGLE QUOTE",
+      "to": "'"
+    },
+    {
+      "from": "“",
+      "name": "LEFT DOUBLE QUOTE",
+      "to": "\""
+    },
+    {
+      "from": "”",
+      "name": "RIGHT DOUBLE QUOTE",
+      "to": "\""
+    },
+    {
+      "from": "…",
+      "name": "HORIZONTAL ELLIPSIS",
+      "to": "..."
+    },
+    {
+      "from": "′",
+      "name": "PRIME",
+      "to": "'"
+    },
+    {
+      "from": "·",
+      "name": "MIDDLE DOT",
+      "to": "-"
+    },
+    {
+      "from": "•",
+      "name": "BULLET",
+      "to": "-"
+    },
+    {
+      "from": "→",
+      "name": "RIGHTWARDS ARROW",
+      "to": "->"
+    }
+  ],
+  "words": [
+    {
+      "find": "utilize",
+      "replace": "kullan",
+      "family": "tr-sadeleştirme"
+    },
+    {
+      "find": "inovatif",
+      "replace": "yenilikçi",
+      "family": "tr-sadeleştirme"
+    },
+    {
+      "find": "optimal",
+      "replace": "uygun",
+      "family": "tr-sadeleştirme"
+    },
+    {
+      "find": "maksimize",
+      "replace": "artır",
+      "family": "tr-sadeleştirme"
+    },
+    {
+      "find": "entegre etmek",
+      "replace": "birleştirmek",
+      "family": "tr-sadeleştirme"
+    },
+    {
+      "find": "optimize etmek",
+      "replace": "iyileştirmek",
+      "family": "tr-sadeleştirme"
+    },
+    {
+      "find": "implemente etmek",
+      "replace": "uygulamak",
+      "family": "tr-sadeleştirme"
+    }
+  ],
+  "phrases": [
+    {
+      "find": "günümüzün hızla değişen dünyasında",
+      "replace": "bugün",
+      "family": "tr-kalıplar"
+    },
+    {
+      "find": "dijital dönüşüm yolculuğunda",
+      "replace": "dijitalleşirken",
+      "family": "tr-kalıplar"
+    },
+    {
+      "find": "bir adım öteye taşıyın",
+      "replace": "geliştirin",
+      "family": "tr-kalıplar"
+    },
+    {
+      "find": "benzersiz bir deneyim sunuyor",
+      "replace": "kolaylık sağlıyor",
+      "family": "tr-kalıplar"
+    },
+    {
+      "find": "sonuç olarak belirtmek gerekir ki",
+      "replace": "",
+      "family": "tr-kalıplar"
+    },
+    {
+      "find": "bu noktada belirtmek gerekir ki",
+      "replace": "",
+      "family": "tr-kalıplar"
+    },
+    {
+      "find": "gelin birlikte keşfedelim",
+      "replace": "inceleyelim",
+      "family": "tr-kalıplar"
+    },
+    {
+      "find": "potansiyelinizi ortaya çıkarın",
+      "replace": "",
+      "family": "tr-kalıplar"
+    },
+    {
+      "find": "oyunun kurallarını değiştiren",
+      "replace": "",
+      "family": "tr-kalıplar"
+    },
+    {
+      "find": "kaydırmayı bırakın",
+      "replace": "",
+      "family": "tr-kalıplar"
+    },
+    {
+      "find": "bu videoda sizlere anlatacağım",
+      "replace": "",
+      "family": "tr-kalıplar"
+    },
+    {
+      "find": "çağımızın vazgeçilmezi",
+      "replace": "",
+      "family": "tr-kalıplar"
+    }
+  ],
+  "structures": [
+    {
+      "id": "tr-not-only",
+      "regex": "(?i)\\bsadece\\b[^.!?\\n]{2,80}\\bdeğil\\b[^.!?\\n]{0,30}\\baynı zamanda\\b",
+      "name": "Sadece X değil aynı zamanda Y",
+      "fix": "Anlamı tek açık cümlede ver; gerekli karşılaştırmayı koru."
+    },
+    {
+      "id": "tr-preamble",
+      "regex": "(?i)\\b(?:bu videoda|bugünkü videoda)\\b",
+      "name": "Uzun video girişi",
+      "fix": "Somut konuya doğrudan gir."
+    },
+    {
+      "id": "tr-bait",
+      "regex": "(?i)\\b(?:kaydırmayı bırak|hemen takip et)\\w*",
+      "name": "Genel dikkat çağrısı",
+      "fix": "İzleyiciye somut neden ver."
+    },
+    {
+      "id": "tr-rhetorical",
+      "regex": "(?mi)^\\s*(?:sonuç|peki ya sonra|neden mi)\\s*\\?\\s*$",
+      "name": "Kalıp soru satırı",
+      "fix": "Gerekmiyorsa doğrudan yanıtı yaz."
+    },
+    {
+      "id": "tr-hashtags",
+      "regex": "(?:#\\w+\\s*){6,}",
+      "name": "Hashtag yığını",
+      "fix": "İlgili etiketleri seç; güncel platform sınırını ayrıca doğrula."
+    },
+    {
+      "id": "tr-shouting",
+      "regex": "\\b[A-ZÇĞİÖŞÜ]{3,}(?:\\s+[A-ZÇĞİÖŞÜ]{3,}){2,}\\b",
+      "name": "Uzun büyük harf dizisi",
+      "fix": "Vurgu amacını değerlendir; metni bağıran biçimde yazma."
+    }
+  ]
+}

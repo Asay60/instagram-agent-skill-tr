@@ -35,6 +35,12 @@ import json
 import re
 import statistics
 import sys
+from pathlib import Path
+import unicodedata
+sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "_instagram_agent_shared"))
+from ig_locale import configure_locale, lower, print_tr_report
+LANG = "en"
+
 
 WORD_RE = re.compile(r"[A-Za-z0-9$%'’-]+")
 NUMBER_RE = re.compile(
@@ -115,7 +121,7 @@ def clamp(n):
 
 def words(text):
     # "$18,000" is one word when it is spoken, so it is one word here too.
-    return WORD_RE.findall(re.sub(r"(?<=\d),(?=\d)", "", text))
+    return WORD_RE.findall(unicodedata.normalize("NFC", re.sub(r"(?<=\d),(?=\d)", "", text)))
 
 
 def check_length(text):
@@ -139,7 +145,7 @@ def check_specificity(text):
     """One concrete thing beats three abstract ones."""
     nums = [n.strip() for n in NUMBER_RE.findall(text) if n.strip()]
     propers = set(PROPER_RE.findall(text))
-    low = [w.lower().strip("'’") for w in words(text)]
+    low = [lower(w).strip("'’") for w in words(text)]
     spoken = [w for w in low if w in SPOKEN_NUMBERS or w in MONEY_WORDS]
     hits = len(nums) + len(propers) + len(spoken)
     score = 15.0 if hits == 0 else clamp(45 + hits * 30)
@@ -150,10 +156,10 @@ def check_specificity(text):
 
 def check_stakes(text):
     """Tension, cost, negation. Something the viewer might lose."""
-    w = [x.lower().strip("'’") for x in words(text)]
+    w = [lower(x).strip("'’") for x in words(text)]
     hits = [x for x in w if x in STAKES]
     markers = sorted(set(hits))
-    if re.search(r"\$\s?\d", text):
+    if re.search(r"[$₺€£]\s?\d|\d[\d.,]*\s*(?:TL|tl|lira)\b", text):
         markers.append("a price")
     n = len(markers)
     score = {0: 20.0, 1: 70.0}.get(n, 100.0)
@@ -167,7 +173,7 @@ def check_frontload(text):
     w = words(text)
     if not w:
         return 0.0, "empty"
-    low = [x.lower().strip("'’") for x in w]
+    low = [lower(x).strip("'’") for x in w]
     opener = " ".join(low[:2])
     penalty = 0
     hit_opener = None
@@ -199,8 +205,8 @@ def check_frontload(text):
 
 def check_address(text):
     """Aimed at one viewer, or floating in the air."""
-    low = text.lower()
-    w = [x.lower().strip("'’") for x in words(text)]
+    low = lower(text)
+    w = [lower(x).strip("'’") for x in words(text)]
     if re.search(r"\b(you|your|you're|youre|yourself)\b", low):
         return 100.0, "speaks to the viewer"
     if w and w[0] in IMPERATIVES:
@@ -273,12 +279,15 @@ def main():
     ap.add_argument("input", nargs="?", default="-", help="file with one hook per line, or -")
     ap.add_argument("--hook", help="score a single hook given on the command line")
     ap.add_argument("--json", action="store_true")
+    ap.add_argument("--lang", choices=("en", "tr"), default="en",
+                    help="Analysis language / analiz dili (default: en)")
     args = ap.parse_args()
+    configure_locale(globals(), args.lang)
 
     if args.hook:
         lines = [args.hook]
     else:
-        raw = sys.stdin.read() if args.input == "-" else open(args.input, encoding="utf-8").read()
+        raw = sys.stdin.read() if args.input == "-" else Path(args.input).read_text(encoding="utf-8")
         lines = [l.strip() for l in raw.splitlines() if l.strip()]
     if not lines:
         print("nothing to score", file=sys.stderr)
@@ -300,6 +309,9 @@ def main():
         print(json.dumps(payload if len(payload) > 1 else payload[0], indent=2, ensure_ascii=False))
         return
 
+    if LANG == "tr":
+        print_tr_report("hookscore", sorted(payload, key=lambda r: -r["score"]))
+        sys.exit(0 if max(p["score"] for p in payload) >= 70 else 1)
     if len(payload) == 1:
         results, overall, verdict, flags = run(lines[0])
         render_one(lines[0], results, overall, verdict, flags)

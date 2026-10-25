@@ -1,0 +1,4 @@
+interface:
+  display_name: "Reels Senaryosu"
+  short_description: "Reels Senaryosu için içerik iş akışı"
+  default_prompt: "$ig-reel kullanarak markama uygun Türkçe içerik hazırla."

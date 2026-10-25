@@ -1,0 +1,4 @@
+interface:
+  display_name: "Yorum Taslakları"
+  short_description: "Yorum Taslakları için içerik iş akışı"
+  default_prompt: "$ig-comment kullanarak markama uygun Türkçe içerik hazırla."

@@ -1,0 +1,302 @@
+{
+  "version": "1.1-tr",
+  "note": "26 Türkçe açılış kalıbı. Örnekler kurgusaldır; kullanıcı sonucu değildir. Regex eşleştirmeleri ve puanlar Türkçe veri kümesiyle kalibre edilmemiştir.",
+  "rules": [
+    "Konuşma ve ekran metnini ayrı yaz.",
+    "İlk cümlede somut konuya gir.",
+    "Rakam ve sonucu yalnızca doğrulanmışsa kullan.",
+    "Görsel hareketi ve okunaklılığı düşün.",
+    "Kullanıcının gerçek örneğine dayan.",
+    "Açılışta vaat ettiğini içerikte karşıla."
+  ],
+  "hooks": [
+    {
+      "id": 1,
+      "name": "Hatanın Bedeli",
+      "template": "{Hata} bana {tutar} kaybettirdi.",
+      "example": "Eksik teslim maddesi bize 18.000 TL kaybettirdi.",
+      "on_screen": "18.000 TL KAYIP",
+      "best_for": "Hatanın Bedeli yapısına uyan doğrulanmış bir deneyimi veya açıkça etiketlenmiş örneği anlatmak.",
+      "trap": "Sırf kalıba uysun diye sonuç, tutar, müşteri veya aciliyet uydurmak; vaadi karşılamamak.",
+      "match": "\\b(?:kaybettirdi|kaybettim|kaybettik|mal oldu)\\b"
+    },
+    {
+      "id": 2,
+      "name": "Olumsuz Emir",
+      "template": "{Alışkanlığı} bırakın. {Alternatifi} deneyin.",
+      "example": "Her müşteriye aynı teklifi göndermeyi bırakın.",
+      "on_screen": "AYNI TEKLİFİ GÖNDERMEYİN",
+      "best_for": "Olumsuz Emir yapısına uyan doğrulanmış bir deneyimi veya açıkça etiketlenmiş örneği anlatmak.",
+      "trap": "Sırf kalıba uysun diye sonuç, tutar, müşteri veya aciliyet uydurmak; vaadi karşılamamak.",
+      "match": "^\\s*(?:dur|bırak|asla)\\b|\\b(?:bırakın|yapmayın|göndermeyin)\\b"
+    },
+    {
+      "id": 3,
+      "name": "Kimse Söylemiyor",
+      "template": "{Konudaki gerçek} kimsenin size söylediği şey değil.",
+      "example": "İlk 30 teklifinizin reddedilebileceğini kimse söylemiyor.",
+      "on_screen": "İLK TEKLİFLER REDDEDİLEBİLİR",
+      "best_for": "Kimse Söylemiyor yapısına uyan doğrulanmış bir deneyimi veya açıkça etiketlenmiş örneği anlatmak.",
+      "trap": "Sırf kalıba uysun diye sonuç, tutar, müşteri veya aciliyet uydurmak; vaadi karşılamamak.",
+      "match": "\\bkimse\\b[^.!?]{0,80}\\b(?:söylemiyor|anlatmıyor|bahsetmiyor)\\b"
+    },
+    {
+      "id": 4,
+      "name": "Yerini Alan Çözüm",
+      "template": "{Çözüm}, {işin} yerini {kapsamda} aldı.",
+      "example": "Bu şablon teklifin biçimlendirme işinin yerini aldı.",
+      "on_screen": "BİÇİMLENDİRMEYİ ŞABLONA BIRAKIN",
+      "best_for": "Yerini Alan Çözüm yapısına uyan doğrulanmış bir deneyimi veya açıkça etiketlenmiş örneği anlatmak.",
+      "trap": "Sırf kalıba uysun diye sonuç, tutar, müşteri veya aciliyet uydurmak; vaadi karşılamamak.",
+      "match": "\\byerini aldı\\b|\\byerine\\b[^.!?]{0,40}\\b(?:kullan|kullandık)\\b"
+    },
+    {
+      "id": 5,
+      "name": "Süreyi Kısaltma",
+      "template": "Eskiden {süre} sürüyordu; şimdi {süre}.",
+      "example": "Teklif hazırlamak eskiden beş saat sürüyordu, şimdi yirmi dakika.",
+      "on_screen": "5 SAAT → 20 DAKİKA",
+      "best_for": "Süreyi Kısaltma yapısına uyan doğrulanmış bir deneyimi veya açıkça etiketlenmiş örneği anlatmak.",
+      "trap": "Sırf kalıba uysun diye sonuç, tutar, müşteri veya aciliyet uydurmak; vaadi karşılamamak.",
+      "match": "\\beskiden\\b[^.!?]{0,100}\\b(?:şimdi|artık|sürüyordu)\\b|\\bşimdi\\b.{0,30}\\b(?:dakika|saat|saniye)\\b"
+    },
+    {
+      "id": 6,
+      "name": "Gerçek Kayıt",
+      "template": "{Denemeyi} {süre} uyguladım; işte kayıtlar.",
+      "example": "Bu şablonu 30 gün kullandım. İşte gerçek kayıtlar.",
+      "on_screen": "30 GÜNÜN KAYITLARI",
+      "best_for": "Gerçek Kayıt yapısına uyan doğrulanmış bir deneyimi veya açıkça etiketlenmiş örneği anlatmak.",
+      "trap": "Sırf kalıba uysun diye sonuç, tutar, müşteri veya aciliyet uydurmak; vaadi karşılamamak.",
+      "match": "\\bişte (?:gerçek )?(?:rakamlar|kayıtlar|sonuçlar)\\b"
+    },
+    {
+      "id": 7,
+      "name": "Yanlış Yöntem",
+      "template": "{İşlemdeki} hata şu; düzeltmesi {adım}.",
+      "example": "Teklif takibindeki hata şu: sonraki adımın tarihi yok.",
+      "on_screen": "SONRAKİ ADIMIN TARİHİ YOK",
+      "best_for": "Yanlış Yöntem yapısına uyan doğrulanmış bir deneyimi veya açıkça etiketlenmiş örneği anlatmak.",
+      "trap": "Sırf kalıba uysun diye sonuç, tutar, müşteri veya aciliyet uydurmak; vaadi karşılamamak.",
+      "match": "\\b(?:yanlış yap|hata şu|hatası şu)\\w*"
+    },
+    {
+      "id": 8,
+      "name": "İçeriden Bilgi",
+      "template": "{Alanda} {süre} çalıştım; gördüğüm sorun şu.",
+      "example": "Satışta beş yıl çalıştım; en sık gördüğüm sorun kayıtsız takipti.",
+      "on_screen": "KAYITSIZ TAKİP SORUNU",
+      "best_for": "İçeriden Bilgi yapısına uyan doğrulanmış bir deneyimi veya açıkça etiketlenmiş örneği anlatmak.",
+      "trap": "Sırf kalıba uysun diye sonuç, tutar, müşteri veya aciliyet uydurmak; vaadi karşılamamak.",
+      "match": "\\b(?:yıl|sene) çalıştım\\b|\\biçeriden\\b"
+    },
+    {
+      "id": 9,
+      "name": "Kullanılabilir Şablon",
+      "template": "Bu {şablonu} kullanın; {somut işe} yarıyor.",
+      "example": "Bu teklif takip tablosunu kullanın; sonraki görüşmeyi görün.",
+      "on_screen": "BU TABLOYU KULLANIN",
+      "best_for": "Kullanılabilir Şablon yapısına uyan doğrulanmış bir deneyimi veya açıkça etiketlenmiş örneği anlatmak.",
+      "trap": "Sırf kalıba uysun diye sonuç, tutar, müşteri veya aciliyet uydurmak; vaadi karşılamamak.",
+      "match": "\\bbu\\b.{0,50}\\b(?:şablonu|tabloyu|listeyi) (?:kullanın|kopyalayın)\\b"
+    },
+    {
+      "id": 10,
+      "name": "Duruma Göre Çözüm",
+      "template": "Eğer {durum} varsa {çözümü} deneyin.",
+      "example": "Eğer teklifleriniz yanıtsız kalıyorsa önce son görüşme tarihine bakın.",
+      "on_screen": "YANITSIZ TEKLİFLERE BAKIN",
+      "best_for": "Duruma Göre Çözüm yapısına uyan doğrulanmış bir deneyimi veya açıkça etiketlenmiş örneği anlatmak.",
+      "trap": "Sırf kalıba uysun diye sonuç, tutar, müşteri veya aciliyet uydurmak; vaadi karşılamamak.",
+      "match": "^\\s*eğer\\b"
+    },
+    {
+      "id": 11,
+      "name": "Numaralı Liste",
+      "template": "{Sonuç} için {sayı} adım; {sıra} sıklıkla atlanıyor.",
+      "example": "Teklif takibi için üç adım; ikincisi sıklıkla atlanıyor.",
+      "on_screen": "TEKLİF TAKİBİNDE 3 ADIM",
+      "best_for": "Numaralı Liste yapısına uyan doğrulanmış bir deneyimi veya açıkça etiketlenmiş örneği anlatmak.",
+      "trap": "Sırf kalıba uysun diye sonuç, tutar, müşteri veya aciliyet uydurmak; vaadi karşılamamak.",
+      "match": "\\b(?:\\d+|üç|dört|beş) (?:adım|yol|hata|öneri)\\b"
+    },
+    {
+      "id": 12,
+      "name": "Gerçek İtiraz",
+      "template": "“{İtiraz}.” Bunu şu şekilde ele alın.",
+      "example": "“Müşteriler tablo doldurmaz.” Satırları müşteriye doldurtmayın.",
+      "on_screen": "TABLOYU KİM DOLDURACAK?",
+      "best_for": "Gerçek İtiraz yapısına uyan doğrulanmış bir deneyimi veya açıkça etiketlenmiş örneği anlatmak.",
+      "trap": "Sırf kalıba uysun diye sonuç, tutar, müşteri veya aciliyet uydurmak; vaadi karşılamamak.",
+      "match": "^[\"“][^\"”]+[\"”]"
+    },
+    {
+      "id": 13,
+      "name": "Önce Sonra",
+      "template": "Önce {eski durum}, sonra {yeni durum}; değişen şey {neden}.",
+      "example": "Önce dağınık notlar. Sonra tek takip listesi.",
+      "on_screen": "ÖNCE NOTLAR, SONRA TEK LİSTE",
+      "best_for": "Önce Sonra yapısına uyan doğrulanmış bir deneyimi veya açıkça etiketlenmiş örneği anlatmak.",
+      "trap": "Sırf kalıba uysun diye sonuç, tutar, müşteri veya aciliyet uydurmak; vaadi karşılamamak.",
+      "match": "\\bönce\\b[^.!?]{0,70}\\bsonra\\b"
+    },
+    {
+      "id": 14,
+      "name": "Belirli Kitleye Seslenme",
+      "template": "{Hedef kitle}, {somut soruna} bakın.",
+      "example": "Yapı malzemesi satıcıları, yanıtsız tekliflerin tarihine bakın.",
+      "on_screen": "SATICILAR, BU TARİHE BAKIN",
+      "best_for": "Belirli Kitleye Seslenme yapısına uyan doğrulanmış bir deneyimi veya açıkça etiketlenmiş örneği anlatmak.",
+      "trap": "Sırf kalıba uysun diye sonuç, tutar, müşteri veya aciliyet uydurmak; vaadi karşılamamak.",
+      "match": "^\\s*(?:satıcılar|işletme sahipleri|avukatlar|emlakçılar)\\b"
+    },
+    {
+      "id": 15,
+      "name": "Başarısız Denemeler",
+      "template": "İlk {sayı} denemem olmadı; {değişiklik} fark yarattı.",
+      "example": "İlk beş takip mesajıma yanıt gelmedi. Soruyu değiştirdim.",
+      "on_screen": "İLK 5 MESAJ YANITSIZDI",
+      "best_for": "Başarısız Denemeler yapısına uyan doğrulanmış bir deneyimi veya açıkça etiketlenmiş örneği anlatmak.",
+      "trap": "Sırf kalıba uysun diye sonuç, tutar, müşteri veya aciliyet uydurmak; vaadi karşılamamak.",
+      "match": "\\bilk\\b.{0,50}\\b(?:olmadı|yanıt gelmedi|başarısız|işe yaramadı)\\b"
+    },
+    {
+      "id": 16,
+      "name": "Gerçek Soru",
+      "template": "“{Gerçek soruyu aynen yaz}” sorusunu yanıtla.",
+      "example": "“Teklifi gönderdikten sonra ne zaman aramalıyım?”",
+      "on_screen": "TEKLİFTEN SONRA NE ZAMAN ARAMALI?",
+      "best_for": "Gerçek Soru yapısına uyan doğrulanmış bir deneyimi veya açıkça etiketlenmiş örneği anlatmak.",
+      "trap": "Sırf kalıba uysun diye sonuç, tutar, müşteri veya aciliyet uydurmak; vaadi karşılamamak.",
+      "match": "\\b(?:ne zaman|nasıl|neden|hangi)\\b[^.!?]{0,100}\\?"
+    },
+    {
+      "id": 17,
+      "name": "Yan Yana Karşılaştırma",
+      "template": "{A} mı {B} mi? {Koşulda} karşılaştıralım.",
+      "example": "Excel mi CRM mi? On kişilik satış ekibi için karşılaştıralım.",
+      "on_screen": "EXCEL Mİ CRM Mİ?",
+      "best_for": "Yan Yana Karşılaştırma yapısına uyan doğrulanmış bir deneyimi veya açıkça etiketlenmiş örneği anlatmak.",
+      "trap": "Sırf kalıba uysun diye sonuç, tutar, müşteri veya aciliyet uydurmak; vaadi karşılamamak.",
+      "match": "\\b(?:mi|mı|mu|mü)\\b.{0,40}\\b(?:mi|mı|mu|mü)\\b|\\bkarşılaştıralım\\b"
+    },
+    {
+      "id": 18,
+      "name": "Doğrudan Demo",
+      "template": "{Gerçek işlemi ekranda başlat}.",
+      "example": "Şimdi bu teklife bir takip tarihi ekliyorum.",
+      "on_screen": "TAKİP TARİHİNİ EKLEYELİM",
+      "best_for": "Doğrudan Demo yapısına uyan doğrulanmış bir deneyimi veya açıkça etiketlenmiş örneği anlatmak.",
+      "trap": "Sırf kalıba uysun diye sonuç, tutar, müşteri veya aciliyet uydurmak; vaadi karşılamamak.",
+      "match": "^\\s*(?:bakın|izleyin|şimdi bu)\\b"
+    },
+    {
+      "id": 19,
+      "name": "Gerçek Son Tarih",
+      "template": "{Doğrulanmış tarih} öncesinde {eylem}.",
+      "example": "Başvuru cuma kapanıyor; eksik belgenizi bugün kontrol edin.",
+      "on_screen": "CUMA ÖNCESİ KONTROL EDİN",
+      "best_for": "Gerçek Son Tarih yapısına uyan doğrulanmış bir deneyimi veya açıkça etiketlenmiş örneği anlatmak.",
+      "trap": "Sırf kalıba uysun diye sonuç, tutar, müşteri veya aciliyet uydurmak; vaadi karşılamamak.",
+      "match": "\\b(?:son gün|son tarih|kapanıyor|bitiyor)\\b"
+    },
+    {
+      "id": 20,
+      "name": "Gereksiz Koşulu Kaldırma",
+      "template": "{Başlamak için} {şeye} ihtiyacınız yok.",
+      "example": "Teklif takibine başlamak için pahalı bir yazılıma ihtiyacınız yok.",
+      "on_screen": "PAHALI YAZILIM ŞART DEĞİL",
+      "best_for": "Gereksiz Koşulu Kaldırma yapısına uyan doğrulanmış bir deneyimi veya açıkça etiketlenmiş örneği anlatmak.",
+      "trap": "Sırf kalıba uysun diye sonuç, tutar, müşteri veya aciliyet uydurmak; vaadi karşılamamak.",
+      "match": "\\b(?:ihtiyacınız yok|şart değil|zorunda değilsiniz)\\b"
+    },
+    {
+      "id": 21,
+      "name": "Olayın Ortasından",
+      "template": "... ve {olayın dönüm noktası}.",
+      "example": "... ve müşteri dokuz gün sonra aynı soruyu sordu.",
+      "on_screen": "DOKUZ GÜN SONRA AYNI SORU",
+      "best_for": "Olayın Ortasından yapısına uyan doğrulanmış bir deneyimi veya açıkça etiketlenmiş örneği anlatmak.",
+      "trap": "Sırf kalıba uysun diye sonuç, tutar, müşteri veya aciliyet uydurmak; vaadi karşılamamak.",
+      "match": "^\\s*(?:\\.\\.\\.|…)"
+    },
+    {
+      "id": 22,
+      "name": "Ters Köşe Görüş",
+      "template": "{Yaygın görüşe gerekçeli itiraz}.",
+      "example": "Daha çok teklif göndermek her zaman daha çok satış getirmez.",
+      "on_screen": "DAHA ÇOK TEKLİF YETERLİ Mİ?",
+      "best_for": "Ters Köşe Görüş yapısına uyan doğrulanmış bir deneyimi veya açıkça etiketlenmiş örneği anlatmak.",
+      "trap": "Sırf kalıba uysun diye sonuç, tutar, müşteri veya aciliyet uydurmak; vaadi karşılamamak.",
+      "match": "\\b(?:her zaman|sanılanın aksine|aslında)\\b"
+    },
+    {
+      "id": 23,
+      "name": "Kaynaklı İstatistik",
+      "template": "{Kaynağa göre} {grubun yüzde oranı} {bulgu}.",
+      "example": "Kaynağı doğrulanmış araştırmadaki yüzdeyi burada açıklayın.",
+      "on_screen": "İSTATİSTİĞİN KAYNAĞINA BAKIN",
+      "best_for": "Kaynaklı İstatistik yapısına uyan doğrulanmış bir deneyimi veya açıkça etiketlenmiş örneği anlatmak.",
+      "trap": "Sırf kalıba uysun diye sonuç, tutar, müşteri veya aciliyet uydurmak; vaadi karşılamamak.",
+      "match": "\\b(?:yüzde\\s+\\w+|\\d+[,.]?\\d*\\s*%)|%\\s*\\d+"
+    },
+    {
+      "id": 24,
+      "name": "Yeni Şeyi Gösterme",
+      "template": "Yeni {şey} bu; {somut fark}.",
+      "example": "Yeni teklif takip ekranı bu; bekleyen işleri tek yerde gösteriyor.",
+      "on_screen": "YENİ TAKİP EKRANI",
+      "best_for": "Yeni Şeyi Gösterme yapısına uyan doğrulanmış bir deneyimi veya açıkça etiketlenmiş örneği anlatmak.",
+      "trap": "Sırf kalıba uysun diye sonuç, tutar, müşteri veya aciliyet uydurmak; vaadi karşılamamak.",
+      "match": "\\byeni\\b.{0,50}\\b(?:bu|tanışın)\\b"
+    },
+    {
+      "id": 25,
+      "name": "Başkasının Doğrulanmış Sonucu",
+      "template": "{İzinli kişi} {doğrulanmış sonucu} elde etti.",
+      "example": "İzni alınmış müşteri örneğini gerçek verileriyle burada anlatın.",
+      "on_screen": "İZİNLİ MÜŞTERİ ÖRNEĞİ",
+      "best_for": "Başkasının Doğrulanmış Sonucu yapısına uyan doğrulanmış bir deneyimi veya açıkça etiketlenmiş örneği anlatmak.",
+      "trap": "Sırf kalıba uysun diye sonuç, tutar, müşteri veya aciliyet uydurmak; vaadi karşılamamak.",
+      "match": "\\b(?:müşterimiz|danışanımız)\\b.{0,60}\\b(?:kazandı|başardı|azalttı)\\b"
+    },
+    {
+      "id": 26,
+      "name": "Ölçülü Üstünlük",
+      "template": "{Ölçüte göre en iyi} {şey} {gerekçe}.",
+      "example": "Denediğim üç yöntem içinde en hızlı olanı bu oldu.",
+      "on_screen": "DENEDİĞİM 3 YÖNTEM",
+      "best_for": "Ölçülü Üstünlük yapısına uyan doğrulanmış bir deneyimi veya açıkça etiketlenmiş örneği anlatmak.",
+      "trap": "Sırf kalıba uysun diye sonuç, tutar, müşteri veya aciliyet uydurmak; vaadi karşılamamak.",
+      "match": "\\ben (?:hızlı|kolay|büyük|küçük|etkili)\\b"
+    }
+  ],
+  "classify_order": [
+    1,
+    23,
+    5,
+    4,
+    3,
+    15,
+    20,
+    7,
+    9,
+    26,
+    25,
+    24,
+    18,
+    17,
+    8,
+    6,
+    16,
+    12,
+    10,
+    2,
+    13,
+    19,
+    21,
+    22,
+    11,
+    14
+  ]
+}

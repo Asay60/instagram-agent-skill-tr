@@ -21,7 +21,7 @@ If you only have `followers`, leave median out and the script says so.
 
 Usage
   python3 swipe.py captured.tsv
-  python3 swipe.py captured.tsv --out ~/.claude/instagram/swipe.md
+  python3 swipe.py captured.tsv --out ~/.instagram-agent/swipe.md
   python3 swipe.py captured.tsv --json
 """
 
@@ -31,6 +31,12 @@ import os
 import re
 import statistics
 import sys
+from pathlib import Path
+import unicodedata
+sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "_instagram_agent_shared"))
+from ig_locale import configure_locale, lower, print_tr_report
+LANG = "en"
+
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 HOOKS = os.path.join(HERE, "..", "ig-reel", "hooks.json")
@@ -45,7 +51,7 @@ except Exception:                                 # ig-viral copied on its own
 
 def load_formulas(path):
     try:
-        d = json.load(open(path, encoding="utf-8"))
+        d = json.loads(Path(path).read_text(encoding="utf-8"))
     except Exception:
         return None
     by_id = {h["id"]: h for h in d["hooks"]}
@@ -64,7 +70,7 @@ def classify(hook, formulas):
 
 
 def read_rows(path):
-    raw = sys.stdin.read() if path == "-" else open(path, encoding="utf-8").read()
+    raw = sys.stdin.read() if path == "-" else Path(path).read_text(encoding="utf-8")
     lines = [l for l in raw.splitlines() if l.strip() and not l.lstrip().startswith("#")]
     if not lines:
         return []
@@ -79,6 +85,8 @@ def read_rows(path):
         if len(cells) < len(cols):
             cells += [""] * (len(cols) - len(cells))
         r = dict(zip(cols, [c.strip() for c in cells]))
+        if any(re.search(r"[^\d\s,.]", r.get(k, "") or "") for k in ("views", "median", "followers")):
+            raise ValueError("Use full integer counts, e.g. 4500; K/M/bin abbreviations are not accepted")
         try:
             r["views"] = int(re.sub(r"[^\d]", "", r.get("views", "")) or 0)
         except ValueError:
@@ -95,6 +103,7 @@ def analyse(rows, formulas):
     used_median = any(r.get("median") for r in rows)
     for r in rows:
         base = r.get("median") or r.get("followers") or 0
+        r["baseline_kind"] = "account median" if r.get("median") else ("follower count" if r.get("followers") else "unknown")
         r["baseline"] = base
         r["outlier"] = round(r["views"] / base, 2) if base else None
         r["formula_id"], r["formula"] = classify(r["hook"], formulas)
@@ -116,7 +125,7 @@ def analyse(rows, formulas):
     for r in top:
         counts[r["formula"]] = counts.get(r["formula"], 0) + 1
     return {
-        "baseline": "account median" if used_median else "follower count",
+        "baseline": ("mixed (not comparable)" if len({r["baseline_kind"] for r in rows}) > 1 else rows[0]["baseline_kind"]) if rows else "unknown",
         "n": len(ranked),
         "accounts": len({r.get("account", "") for r in ranked}),
         "reels": ranked,
@@ -174,17 +183,23 @@ def to_markdown(a):
 def main():
     ap = argparse.ArgumentParser(description="Rank collected reels by outlier multiple.")
     ap.add_argument("input", nargs="?", default="-", help="TSV file, or - for stdin")
-    ap.add_argument("--hooks", default=HOOKS, help="path to ig-reel/hooks.json")
+    ap.add_argument("--hooks", default=None, help="path to ig-reel/hooks.json")
     ap.add_argument("--out", help="also write the swipe file as markdown here")
     ap.add_argument("--json", action="store_true")
+    ap.add_argument("--lang", choices=("en", "tr"), default="en",
+                    help="Analysis language / analiz dili (default: en)")
     args = ap.parse_args()
+    configure_locale(globals(), args.lang)
 
     rows = read_rows(args.input)
     if not rows:
         print("no usable rows. Need a tab-separated file with at least views and hook.",
               file=sys.stderr)
         sys.exit(2)
-    formulas = load_formulas(args.hooks)
+    formulas = load_formulas(args.hooks or HOOKS)
+    if score_hook is not None:
+        import hookscore
+        configure_locale(vars(hookscore), args.lang)
     a = analyse(rows, formulas)
     if not formulas:
         print("note: hooks.json not found, formulas not named. Pass --hooks.", file=sys.stderr)
@@ -193,11 +208,13 @@ def main():
 
     if args.json:
         print(json.dumps(a, indent=2, ensure_ascii=False))
+    elif LANG == "tr":
+        print_tr_report("swipe", a)
     else:
         render(a)
     if args.out:
         path = os.path.expanduser(args.out)
-        os.makedirs(os.path.dirname(path), exist_ok=True)
+        Path(path).parent.mkdir(parents=True, exist_ok=True)
         open(path, "w", encoding="utf-8").write(to_markdown(a))
         print(f"wrote {path}", file=sys.stderr)
 

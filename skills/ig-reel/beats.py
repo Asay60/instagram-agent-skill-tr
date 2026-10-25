@@ -25,6 +25,12 @@ import argparse
 import json
 import re
 import sys
+from pathlib import Path
+import unicodedata
+sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "_instagram_agent_shared"))
+from ig_locale import configure_locale, lower, print_tr_report
+LANG = "en"
+
 
 WORD_RE = re.compile(r"[A-Za-z0-9$%'’-]+")
 SENT_RE = re.compile(r"[^.!?]+[.!?]*")
@@ -44,7 +50,7 @@ ABSTRACT_RUN = 3         # beats in a row with nothing checkable in them.
 
 def words(text):
     # "$18,000" is one word when it is spoken, so it is one word here too.
-    return WORD_RE.findall(re.sub(r"(?<=\d),(?=\d)", "", text))
+    return WORD_RE.findall(unicodedata.normalize("NFC", re.sub(r"(?<=\d),(?=\d)", "", text)))
 
 
 def pretty(token):
@@ -83,6 +89,8 @@ def split_beats(raw, wps):
 
 
 def analyse(raw, wpm=165, target=None):
+    if wpm <= 0 or (target is not None and target <= 0):
+        raise ValueError("wpm and target must be positive / süre ve hız pozitif olmalı")
     wps = wpm / 60.0
     beats = split_beats(raw, wps)
     if not beats:
@@ -146,8 +154,8 @@ def analyse(raw, wpm=165, target=None):
             run, start = 0, None
 
     # Does the last line hand you back to the first one?
-    first = {w.lower() for w in words(rows[0]["text"]) if w.lower() not in STOPWORDS}
-    last = {w.lower() for w in words(rows[-1]["text"]) if w.lower() not in STOPWORDS}
+    first = {lower(w) for w in words(rows[0]["text"]) if lower(w) not in STOPWORDS}
+    last = {lower(w) for w in words(rows[-1]["text"]) if lower(w) not in STOPWORDS}
     loop = sorted(pretty(w) for w in first & last)
     if loop:
         notes.append(f"Loops: the last beat repeats \"{', '.join(loop[:3])}\" from the hook. "
@@ -197,15 +205,20 @@ def main():
     ap.add_argument("--wpm", type=float, default=165, help="speaking rate (default 165)")
     ap.add_argument("--target", type=float, help="target length in seconds")
     ap.add_argument("--json", action="store_true")
+    ap.add_argument("--lang", choices=("en", "tr"), default="en",
+                    help="Analysis language / analiz dili (default: en)")
     args = ap.parse_args()
+    configure_locale(globals(), args.lang)
 
-    raw = sys.stdin.read() if args.input == "-" else open(args.input, encoding="utf-8").read()
+    raw = sys.stdin.read() if args.input == "-" else Path(args.input).read_text(encoding="utf-8")
     a = analyse(raw, wpm=args.wpm, target=args.target)
     if not a:
         print("empty script", file=sys.stderr)
         sys.exit(2)
     if args.json:
         print(json.dumps(a, indent=2, ensure_ascii=False))
+    elif LANG == "tr":
+        print_tr_report("beats", a)
     else:
         render(a)
     sys.exit(0)

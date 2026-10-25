@@ -26,6 +26,12 @@ import json
 import re
 import sys
 import textwrap
+from pathlib import Path
+import unicodedata
+sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "_instagram_agent_shared"))
+from ig_locale import configure_locale, lower, print_tr_report
+LANG = "en"
+
 
 LIMIT = 2200             # Instagram's hard caption limit.
 TRUNCATE = 125           # Roughly where the feed cuts to "... more".
@@ -35,7 +41,7 @@ HASHTAG_LIMIT = 5        # Instagram's cap per post or reel since 18 Dec 2025,
                          # rather than many generic ones, can improve both your
                          # content's performance and people's experience".
 
-HASHTAG_RE = re.compile(r"(?:^|\s)(#[A-Za-z0-9_]+)")
+HASHTAG_RE = re.compile(r"(?:^|\s)(#\w+)", re.UNICODE)
 MENTION_RE = re.compile(r"(?:^|\s)(@[A-Za-z0-9_.]+)")
 LINK_RE = re.compile(r"https?://\S+|\bwww\.\S+|\b[a-z0-9-]+\.(?:com|co|io|net|org|ai|app)/\S*",
                      re.IGNORECASE)
@@ -76,8 +82,10 @@ def render_box(window, truncated, out=sys.stdout, width=52):
     print("  +" + "-" * (width + 2 - len(tail) - 2) + f" {tail} " + "+", file=out)
 
 
-def analyse(text, cut=TRUNCATE, keywords=None):
-    text = text.rstrip()
+def analyse(text, cut=TRUNCATE, keywords=None, hashtag_limit=HASHTAG_LIMIT):
+    if cut <= 0 or hashtag_limit < 0:
+        raise ValueError("truncate must be positive; hashtag limit cannot be negative")
+    text = unicodedata.normalize("NFC", text).rstrip()
     stripped = text.strip()
     chars = len(stripped)
     lines = [l for l in stripped.split("\n")]
@@ -89,7 +97,7 @@ def analyse(text, cut=TRUNCATE, keywords=None):
     window = visible_window(stripped, cut)
     truncated = chars > cut
     asks = [name for pattern, name in ASKS if pattern.search(stripped)]
-    filler = [t for t in tags if t.lower() in FILLER_TAGS]
+    filler = [t for t in tags if lower(t) in FILLER_TAGS]
     keywords = [k.strip() for k in (keywords or []) if k.strip()]
 
     checks = []
@@ -117,10 +125,10 @@ def analyse(text, cut=TRUNCATE, keywords=None):
         f"{len(CONCRETE_RE.findall(window))} number(s) or name(s) in the visible window"
         + ("" if CONCRETE_RE.search(window) else " - nothing checkable before the tap"))
 
-    if len(tags) > HASHTAG_LIMIT:
-        add("HASHTAGS", "FAIL", f"{len(tags)} tags, over Instagram's cap of {HASHTAG_LIMIT}. "
-                                "Tags past the fifth do not count and the block reads as old")
-    elif len(tags) == HASHTAG_LIMIT and filler:
+    if len(tags) > hashtag_limit:
+        add("HASHTAGS", "FAIL", f"{len(tags)} tags, over the configured recommendation of {hashtag_limit}. "
+                                "Review the current platform limit separately")
+    elif len(tags) == hashtag_limit and filler:
         add("HASHTAGS", "WARN", f"{len(tags)} tags, at the cap, and "
                                 f"{len(filler)} of them generic. Spend the five on topics")
     elif filler:
@@ -155,10 +163,10 @@ def analyse(text, cut=TRUNCATE, keywords=None):
         + (" - reads as decoration" if density > 4 else ""))
 
     if keywords:
-        low = stripped.lower()
-        found = [k for k in keywords if k.lower() in low]
-        missing = [k for k in keywords if k.lower() not in low]
-        in_window = [k for k in found if k.lower() in window.lower()]
+        low = lower(stripped)
+        found = [k for k in keywords if lower(k) in low]
+        missing = [k for k in keywords if lower(k) not in low]
+        in_window = [k for k in found if lower(k) in lower(window)]
         status = "PASS" if not missing else ("WARN" if found else "FAIL")
         add("SEARCH TERMS", status,
             f"{len(found)}/{len(keywords)} present"
@@ -198,13 +206,20 @@ def main():
     ap.add_argument("--truncate", type=int, default=TRUNCATE,
                     help=f"characters shown before '... more' (default {TRUNCATE})")
     ap.add_argument("--keywords", default="", help="comma-separated terms you want to be found for")
+    ap.add_argument("--hashtag-limit", type=int, default=HASHTAG_LIMIT,
+                    help="Editorial recommendation; verify current platform limits")
     ap.add_argument("--json", action="store_true")
+    ap.add_argument("--lang", choices=("en", "tr"), default="en",
+                    help="Analysis language / analiz dili (default: en)")
     args = ap.parse_args()
+    configure_locale(globals(), args.lang)
 
-    raw = sys.stdin.read() if args.input == "-" else open(args.input, encoding="utf-8").read()
-    a = analyse(raw, cut=args.truncate, keywords=args.keywords.split(","))
+    raw = sys.stdin.read() if args.input == "-" else Path(args.input).read_text(encoding="utf-8")
+    a = analyse(raw, cut=args.truncate, keywords=args.keywords.split(","), hashtag_limit=args.hashtag_limit)
     if args.json:
         print(json.dumps(a, indent=2, ensure_ascii=False))
+    elif LANG == "tr":
+        print_tr_report("caption", a)
     else:
         render(a)
     sys.exit(0 if a["verdict"] == "READY" else 1)

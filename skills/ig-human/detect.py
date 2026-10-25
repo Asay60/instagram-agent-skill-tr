@@ -28,6 +28,11 @@ import re
 import statistics
 import sys
 import unicodedata
+from pathlib import Path
+sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "_instagram_agent_shared"))
+from ig_locale import configure_locale, lower, print_tr_report
+LANG = "en"
+
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 LEX = os.path.join(HERE, "slop.json")
@@ -56,7 +61,7 @@ def sentences(text):
 
 
 def words(text):
-    return WORD_RE.findall(text)
+    return WORD_RE.findall(unicodedata.normalize("NFC", text))
 
 
 def check_burstiness(text):
@@ -175,7 +180,7 @@ def bar(score, width=24):
 
 
 def render(results, overall, verdict, label=None, out=sys.stdout):
-    title = "AI DETECTION PANEL" + (f"  -  {label}" if label else "")
+    title = "EDITORIAL STYLE PANEL (not AI authorship detection)" + (f"  -  {label}" if label else "")
     print("\n" + title, file=out)
     print("=" * max(len(title), 62), file=out)
     for name in CHECKS:
@@ -195,11 +200,14 @@ def main():
     ap.add_argument("input", nargs="?", default="-", help="file, or - for stdin")
     ap.add_argument("compare", nargs="?", help="second file, to show before/after")
     ap.add_argument("--json", action="store_true")
-    ap.add_argument("--lexicon", default=LEX)
+    ap.add_argument("--lexicon", default=None)
+    ap.add_argument("--lang", choices=("en", "tr"), default="en",
+                    help="Analysis language / analiz dili (default: en)")
     args = ap.parse_args()
+    configure_locale(globals(), args.lang)
 
-    lex = json.load(open(args.lexicon, encoding="utf-8"))
-    read = lambda p: sys.stdin.read() if p == "-" else open(p, encoding="utf-8").read()
+    lex = json.loads(Path(args.lexicon or LEX).read_text(encoding="utf-8"))
+    read = lambda p: sys.stdin.read() if p == "-" else Path(p).read_text(encoding="utf-8")
 
     targets = [(args.input, read(args.input))]
     if args.compare:
@@ -219,6 +227,9 @@ def main():
         print(json.dumps(payload if args.compare else payload[0], indent=2))
         return
 
+    if LANG == "tr":
+        print_tr_report("detect", payload)
+        sys.exit(0 if payload[-1]["verdict"] == "PASS" else 1)
     for (name, text), p in zip(targets, payload):
         results, overall, verdict = run(text, lex)
         render(results, overall, verdict, label=os.path.basename(name) if args.compare else None)

@@ -1,18 +1,18 @@
 {
   "$schema": "https://anthropic.com/claude-code/marketplace.schema.json",
-  "name": "instagram-agent-skill",
-  "description": "The Instagram agent skill pack for Claude",
+  "name": "instagram-agent-skill-tr",
+  "description": "Türkçe Instagram Agent beceri paketi",
   "owner": {
-    "name": "Jake Schincariol",
-    "url": "https://opusjake.ai"
+    "name": "ASAYTECH",
+    "url": "https://asaytech.com"
   },
   "plugins": [
     {
-      "name": "instagram-agent",
-      "description": "Thirteen Claude skills that run an Instagram account, including a scored hook panel, a viral research skill, a caption linter and a humanizer.",
+      "name": "instagram-agent-tr",
+      "description": "13 Türkçe/İngilizce Instagram becerisi; yerel Python araçları.",
       "source": "./",
       "category": "productivity",
-      "homepage": "https://github.com/Jakeschincariol/instagram-agent-skill"
+      "homepage": "https://github.com/Asay60/instagram-agent-skill-tr"
     }
   ]
 }

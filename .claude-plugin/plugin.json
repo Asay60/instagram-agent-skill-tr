@@ -1,13 +1,21 @@
 {
-  "name": "instagram-agent",
-  "description": "Thirteen Claude skills that run an Instagram account: Reels off 26 hook formulas with a scored hook and a timed beat sheet, a research skill that finds what is working in your niche and ranks it by outlier multiple, captions linted against the feed truncation, carousels, stories, profile score, weekly plan, comments, replies, DMs, repurposing, audits, and a humanizer that strips the AI fingerprint before anything ships.",
-  "version": "1.0.0",
+  "name": "instagram-agent-tr",
+  "description": "Türkçe ve İngilizce Instagram içerik becerileri. Codex/Claude kurulum desteği; taslak üretimi ve yerel editoryal araçlar.",
+  "version": "1.1.0",
   "author": {
-    "name": "Jake Schincariol",
-    "url": "https://opusjake.ai"
+    "name": "ASAYTECH",
+    "url": "https://asaytech.com"
   },
-  "homepage": "https://github.com/Jakeschincariol/instagram-agent-skill",
-  "repository": "https://github.com/Jakeschincariol/instagram-agent-skill",
+  "homepage": "https://github.com/Asay60/instagram-agent-skill-tr",
+  "repository": "https://github.com/Asay60/instagram-agent-skill-tr",
   "license": "MIT",
-  "keywords": ["instagram", "reels", "content", "writing", "humanizer", "social", "marketing"]
+  "keywords": [
+    "instagram",
+    "reels",
+    "content",
+    "writing",
+    "humanizer",
+    "social",
+    "marketing"
+  ]
 }

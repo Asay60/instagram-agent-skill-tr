@@ -1,0 +1,4 @@
+interface:
+  display_name: "Profil Değerlendirmesi"
+  short_description: "Profil Değerlendirmesi için içerik iş akışı"
+  default_prompt: "$ig-profile kullanarak markama uygun Türkçe içerik hazırla."

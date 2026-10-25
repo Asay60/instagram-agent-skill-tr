@@ -1,0 +1,4 @@
+interface:
+  display_name: "Haftalık İçerik Planı"
+  short_description: "Haftalık İçerik Planı için içerik iş akışı"
+  default_prompt: "$ig-plan kullanarak markama uygun Türkçe içerik hazırla."

@@ -1,0 +1,4 @@
+interface:
+  display_name: "Metin Düzenleme"
+  short_description: "Metin Düzenleme için içerik iş akışı"
+  default_prompt: "$ig-human kullanarak markama uygun Türkçe içerik hazırla."

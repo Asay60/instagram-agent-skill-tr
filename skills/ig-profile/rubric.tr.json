@@ -1,0 +1,79 @@
+{
+  "version": "1.1-tr",
+  "total": 100,
+  "note": "12 editoryal ölçüt; toplam 100. Gözlenmeyen alanlar bilinmiyor olarak işaretlenir. Karakter ve platform sınırları güncel uygulamada doğrulanır.",
+  "items": [
+    {
+      "id": "name_field",
+      "points": 12,
+      "full_marks": "İsim ve aranabilir uzmanlık alanı açık; güncel alan sınırına uyuyor.",
+      "common_fail": "Yalnızca isim veya belirsiz sıfatlar."
+    },
+    {
+      "id": "bio_first_line",
+      "points": 12,
+      "full_marks": "Biyografinin ilk satırı kime hangi yararın sunulduğunu açıklar.",
+      "common_fail": "Belirsiz unvan ve sıfat listesi."
+    },
+    {
+      "id": "bio_body",
+      "points": 8,
+      "full_marks": "Biyografinin devamında doğrulanmış kanıt veya açık teklif vardır.",
+      "common_fail": "Doğrulanmamış başarı veya anahtar kelime yığını."
+    },
+    {
+      "id": "pinned_three",
+      "points": 10,
+      "full_marks": "Sabitlenen içerikler kanıt, teklif ve tanışma işlerini karşılar.",
+      "common_fail": "Sabit içerik yok veya aynı işi tekrarlayan içerikler var."
+    },
+    {
+      "id": "link",
+      "points": 8,
+      "full_marks": "Bağlantı biyografinin vaadine uyan ve çalışan hedefe gider.",
+      "common_fail": "Kırık, ilgisiz veya gereğinden çok seçenekli hedef."
+    },
+    {
+      "id": "highlights",
+      "points": 8,
+      "full_marks": "Öne çıkanlar alıcının temel sorularına güncel yanıt verir.",
+      "common_fail": "Belirsiz başlıklar veya güncelliğini yitirmiş içerikler."
+    },
+    {
+      "id": "grid_legibility",
+      "points": 8,
+      "full_marks": "İlk dokuz kapak küçük boyutta okunur ve konuyu açıklar.",
+      "common_fail": "Yazılar okunmuyor veya içerik anlaşılamıyor."
+    },
+    {
+      "id": "photo",
+      "points": 6,
+      "full_marks": "Kişisel hesapta net yüz; kurumsal hesapta okunaklı logo; küçük boyutta seçiliyor.",
+      "common_fail": "Hesap türüne uygun olmayan, seçilemeyen veya düşük kaliteli görüntü."
+    },
+    {
+      "id": "handle",
+      "points": 6,
+      "full_marks": "Kullanıcı adı okunur, söylenebilir ve marka ile tutarlıdır.",
+      "common_fail": "Karışık işaretler veya yanlış anlaşılmaya açık yazım."
+    },
+    {
+      "id": "category_contact",
+      "points": 6,
+      "full_marks": "Hesap türüne uygun kategori ve çalışan iletişim seçenekleri vardır.",
+      "common_fail": "Eksik veya çalışmayan iletişim bilgisi."
+    },
+    {
+      "id": "recent_activity",
+      "points": 10,
+      "full_marks": "İşletmenin gerçek faaliyet düzenine uygun güncel içerik ve yanıtlar vardır.",
+      "common_fail": "Açıklanmayan uzun boşluklar ve yanıtsız gerçek sorular."
+    },
+    {
+      "id": "story_presence",
+      "points": 6,
+      "full_marks": "Hedef kitleye ve kapasiteye uygun Story varlığı bulunur.",
+      "common_fail": "Görülmeyen veriyi pasiflik sayma; veri iste."
+    }
+  ]
+}

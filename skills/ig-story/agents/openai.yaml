@@ -1,0 +1,4 @@
+interface:
+  display_name: "Story Akışı"
+  short_description: "Story Akışı için içerik iş akışı"
+  default_prompt: "$ig-story kullanarak markama uygun Türkçe içerik hazırla."

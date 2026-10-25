@@ -1,0 +1,4 @@
+interface:
+  display_name: "İçeriği Dönüştür"
+  short_description: "İçeriği Dönüştür için içerik iş akışı"
+  default_prompt: "$ig-repurpose kullanarak markama uygun Türkçe içerik hazırla."
